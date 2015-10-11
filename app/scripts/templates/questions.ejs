@@ -1,0 +1,7 @@
+  <div class="panel">
+      <%= data.title %>&nbsp;
+      <a href="#" class="<%= data.isLiked ? 'unlike' : 'like' %>-post btn btn-link" data-postid="<%= data.id %>">Like<span class="glyphicon glyphicon-thumbs-up"></span></a>&nbsp;
+      <span class="badge">
+        <%= data.likes.length %>
+      </span>
+  </div>
