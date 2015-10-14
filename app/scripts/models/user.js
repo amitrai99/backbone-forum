@@ -2,19 +2,21 @@
 
 define([
     'underscore',
-    'backbone',
-    'app'
-], function (_, Backbone, app) {
+    'backbone'
+], function (_, Backbone) {
     'use strict';
 
-    var LikeModel = Backbone.Model.extend({
-
-        urlRoot: app.conf.apis.like,
+    var UserModel = Backbone.Model.extend({
+        url: '',
 
         initialize: function() {
         },
 
         defaults: {
+          "id": null,
+          "name": '',
+          "password": '',
+          "email": ''
         },
 
         validate: function(attrs, options) {
@@ -23,7 +25,8 @@ define([
         parse: function(response, options)  {
             return response;
         }
+
     });
 
-    return LikeModel;
+    return UserModel;
 });

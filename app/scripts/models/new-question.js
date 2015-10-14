@@ -3,14 +3,14 @@
 define([
     'underscore',
     'backbone',
-    'conf'
-], function (_, Backbone, conf) {
+    'app'
+], function (_, Backbone, app) {
     'use strict';
 
     var NewQuestionModel = Backbone.Model.extend({
 
         url: function() {
-          return conf.apis.question;
+          return app.conf.apis.question;
         },
 
         initialize: function() {},

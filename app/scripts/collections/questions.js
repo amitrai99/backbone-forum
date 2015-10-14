@@ -4,13 +4,13 @@ define([
     'underscore',
     'backbone',
     'models/questions',
-    'conf'
-], function (_, Backbone, QuestionsModel, conf) {
+    'app'
+], function (_, Backbone, QuestionsModel, app) {
     'use strict';
 
     var QuestionsCollection = Backbone.Collection.extend({
         model: QuestionsModel,
-        url: function() { return conf.apis.question + '?_embed=likes'; }
+        url: function() { return app.conf.apis.question + '?_embed=likes'; }
     });
 
     return QuestionsCollection;

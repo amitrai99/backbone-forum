@@ -2,8 +2,10 @@
 
 define([
     'jquery',
-    'backbone'
-], function ($, Backbone) {
+    'backbone',
+    'app',
+    'utils'
+], function ($, Backbone, app, utils) {
     'use strict';
 
     var Router = Backbone.Router.extend({
@@ -13,26 +15,49 @@ define([
       currentView: null,
 
       routes: {
+        "login": "login",
         "new-question": "newQuestion",
         "questions": "questions",
         "*actions": "notFound404"
       },
 
-      newQuestion: function() {
+      isLoggedIn: function() {
+        var self = this;
+        if( !utils.auth.getUserSession() ) {
+          this.navigate('login');
+          return false;
+        }
+        return true;
+      },
+
+      login: function() {
         var self = this;
         if( self.currentView ) {
-          self.currentView.remove();
+          self.currentView.close();
         }
-        require(['views/new-question', 'models/new-question'], function( NewQuestion, NewQuestionsModel ) {
-          self.currentView = new NewQuestion( { tagName: 'div', className:'currentView', model: new NewQuestionsModel() } );
+        require(['views/login', 'models/login'], function( LoginView, LoginModel ) {
+          self.currentView = new LoginView( { tagName: 'div', className:'currentView', model: new LoginModel() } );
+          $('#main-container').html( self.currentView.$el );
+        });
+      },
+
+      newQuestion: function() {
+        if( !this.isLoggedIn() ) return;
+        var self = this;
+        if( self.currentView ) {
+          self.currentView.close();
+        }
+        require(['views/new-question', 'models/new-question'], function( NewQuestionView, NewQuestionsModel ) {
+          self.currentView = new NewQuestionView( { tagName: 'div', className:'currentView', model: new NewQuestionsModel() } );
           $('#main-container').html( self.currentView.$el );
         });
       },
 
       questions: function() {
+        if( !this.isLoggedIn() ) return;
         var self = this;
         if( self.currentView ) {
-          self.currentView.remove();
+          self.currentView.close();
         }
         require(['views/questions-collection', 'collections/questions'], function(QuestionsCollectionView, QuestionsCollection) {
           self.currentView = new QuestionsCollectionView( { tagName: 'div', className:'currentView', collection: new QuestionsCollection() } );
@@ -41,8 +66,12 @@ define([
       },
 
       notFound404: function() {
-        console.log('404 not found');
-        window.location.hash = 'questions';
+        if( !this.isLoggedIn() ) {
+          console.log('404 not found. Redirecting to login.');
+          window.location.hash = 'login';
+        } else {
+          window.location.hash = 'questions';
+        }
         //alert('bad route');
       }
 

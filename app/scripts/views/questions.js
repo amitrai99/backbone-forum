@@ -6,11 +6,13 @@ define([
     'backbone',
     'templates',
     'models/like',
-    'conf'
-], function ($, _, Backbone, JST, LikeModel, conf) {
+    'app',
+    'baseview',
+    'utils'
+], function ($, _, Backbone, JST, LikeModel, app, BaseView, utils) {
     'use strict';
 
-    var QuestionsView = Backbone.View.extend({
+    var QuestionsView = BaseView.extend({
         template: JST['app/scripts/templates/questions.ejs'],
 
         tagName: 'li',
@@ -27,7 +29,7 @@ define([
             this.likeModel = new LikeModel;
             this.listenTo(this.model, 'change', this.render);
             this.listenTo(this.likeModel, 'destroy', this.likeModel.reset);
-            this.profileId = conf.auth.getUser().profileId;
+            this.profileId = utils.auth.getUserSession().profileId;
         },
 
         /**
@@ -46,7 +48,7 @@ define([
           var data = this.model.toJSON();
           var likedData = this.checkLiked( data.likes, this.profileId );
           data.isLiked = false;
-          console.log( likedData );
+
           if( likedData ) {
             this.likeModel.set( likedData, {silent:true} );
             data.isLiked = true;

@@ -2,7 +2,7 @@
  * This file is for storing the configuration values for the application
  * @return {Object} returns config object
  */
-define(['utils/auth'], function(auth) {
+define( function() {
   /**
    * configuration object
    * @type {Object}
@@ -17,11 +17,11 @@ define(['utils/auth'], function(auth) {
    */
   var apis = {
     question: apiBase + '/posts',
-    like: apiBase + '/likes'
+    like: apiBase + '/likes',
+    login: apiBase + '/profiles'
   };
 
   conf.apis = apis;
-  conf.auth = auth;
 
   return conf;
 });

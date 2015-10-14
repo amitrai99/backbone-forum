@@ -11,11 +11,14 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'templates'
-], function ($, _, Backbone, JST) {
+    'templates',
+    'baseview',
+    'app',
+    'utils'
+], function ($, _, Backbone, JST, BaseView, app, utils) {
     'use strict';
 
-    var HomeView = Backbone.View.extend({
+    var HomeView = BaseView.extend({
         template: JST['app/scripts/templates/new-question.ejs'],
 
         tagName: 'div',
@@ -33,6 +36,7 @@ define([
         initialize: function () {
             this.listenTo(this.model, 'change', this.render);
             this.render();
+            this.profileId = utils.auth.getUserSession().profileId;
         },
 
         render: function () {
@@ -54,16 +58,16 @@ define([
           if( ques ) {
             this.model.set({
               "title": ques,
-              "profileId": 1
+              "profileId": this.profileId
             });
 
             this.model.save()
-                .done( function() {
-                    self.$el.find('.alert.alert-success').removeClass('hide');
-                } )
-                .fail( function() {
-                    self.$el.find('.alert.alert-warning').removeClass('hide');
-                });
+              .done( function() {
+                  self.$el.find('.alert.alert-success').removeClass('hide');
+              } )
+              .fail( function() {
+                  self.$el.find('.alert.alert-warning').removeClass('hide');
+              });
           }
 
         },

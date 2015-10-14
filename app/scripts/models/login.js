@@ -7,9 +7,10 @@ define([
 ], function (_, Backbone, app) {
     'use strict';
 
-    var LikeModel = Backbone.Model.extend({
-
-        urlRoot: app.conf.apis.like,
+    var LoginModel = Backbone.Model.extend({
+        url: function() {
+          return app.conf.apis.login + '?email=' + this.get('email') + '&password=' + this.get('password');
+        },
 
         initialize: function() {
         },
@@ -25,5 +26,5 @@ define([
         }
     });
 
-    return LikeModel;
+    return LoginModel;
 });

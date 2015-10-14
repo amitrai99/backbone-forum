@@ -7,11 +7,12 @@ define([
     'templates',
     'views/questions',
     'models/like',
-    'conf'
-], function ($, _, Backbone, JST, QuestionsView, LikeModel, conf) {
+    'app',
+    'baseview'
+], function ($, _, Backbone, JST, QuestionsView, LikeModel, app, BaseView) {
     'use strict';
 
-    var QuestionsCollectionView = Backbone.View.extend({
+    var QuestionsCollectionView = BaseView.extend({
         template: JST['app/scripts/templates/questions-collection.ejs'],
 
         tagName: 'div',
@@ -25,7 +26,6 @@ define([
         subViews: {},
 
         initialize: function (options) {
-            this.user = conf.auth.getUser();
             this.render();
             //this.listenTo(this.collection, 'sync', this.render);
             this.listenTo(this.collection, 'add', this.add);

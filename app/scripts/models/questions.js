@@ -3,8 +3,8 @@
 define([
     'underscore',
     'backbone',
-    'conf'
-], function (_, Backbone, conf) {
+    'app'
+], function (_, Backbone, app) {
     'use strict';
 
     var QuestionsModel = Backbone.Model.extend({
@@ -19,7 +19,7 @@ define([
             return response;
         },
 
-        url: function() { return conf.apis.question + '/' + this.get('id') + '?_embed=likes'; }
+        url: function() { return app.conf.apis.question + '/' + this.get('id') + '?_embed=likes'; }
 
     });
 
