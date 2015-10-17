@@ -1,6 +1,6 @@
 # backbone-forum
 
-A simple demo forum created using Backbone. 
+A simple demo forum created using Backbone.
 
 ##Setup
 
@@ -36,7 +36,7 @@ Dummy API powered by [json-server](https://github.com/typicode/json-server).
 
 * Install [json-server](https://github.com/typicode/json-server) for dummy APIs 
 
-Add data in db.json file and start the server.
+Add data in db.json file and start the json-server.
 
 There is some test data already in the `etc/json-server/db.json` folder.
 You can use that to test the app.
