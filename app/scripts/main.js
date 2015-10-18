@@ -17,9 +17,13 @@ require.config({
     }
 });
 
-require([
-    'backbone', 'routes/router'
-], function (Backbone, Router) {
-    var router = new Router();
-    Backbone.history.start( {pushState: false} );
+// require([
+//     'backbone', 'routes/router'
+// ], function (Backbone, Router) {
+//     var router = new Router();
+//     Backbone.history.start( {pushState: false} );
+// });
+//
+require(['app'], function( app ){
+  app.init();
 });

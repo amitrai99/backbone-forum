@@ -21,7 +21,8 @@ define([
         className: '',
 
         events: {
-          'click .sign-in': 'login'
+          'click .sign-in': 'login',
+          'submit form#login-form': 'login'
         },
 
         initialize: function () {
@@ -39,7 +40,10 @@ define([
         login: function(evt) {
           var $email = this.$el.find('#userEmail'),
               $pwd = this.$el.find('#password'),
-              data = null;
+              data = null,
+              self = this;
+
+          evt.preventDefault();
 
           if($email.val() && $pwd.val() ) {
             //set the data in model
@@ -56,7 +60,10 @@ define([
 
             //Using GET is not good security practice for this scenario
             this.authUtil.login(data).done( function(data, textStatus, jqXHR) {
-              window.location.hash = 'questions';
+              if( $.isArray(data) && data.length ) {
+                self.$el.trigger('logged-in-success');
+                app.router.navigate('questions', {trigger: true});
+              }
             }).fail( function( jqXHR, textStatus, errorThrown ) {
               alert('Login failed!')
             });

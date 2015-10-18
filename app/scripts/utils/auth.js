@@ -26,19 +26,23 @@ define(['models/login','models/user'], function( LoginModel, UserModel ) {
     //return the jquery promise
     var pr = loginModel.fetch();
     pr.done(function( data, textStatus, jqXHR ) {
-      $.isArray( data ) ? self.setUserSession( data[0] ) : self.setUserSession( data );
+      $.isArray( data ) && data.length ? self.setUserSession( data[0] ) : self.setUserSession( data );
     });
     return pr;
   };
 
   auth.prototype.setUserSession = function(user) {
     window.sessionStorage.setItem( 'user', JSON.stringify(user) );
-  }
+  };
+
+  auth.prototype.removeUserSession = function() {
+    window.sessionStorage.removeItem( 'user' );
+  };
 
   auth.prototype.getUserSession = function() {
-    var us = window.sessionStorage.getItem( 'user' );
-    return us && us !== 'undefined' ? JSON.parse(us) : null;
-  }
+    var us = window.sessionStorage.getItem( 'user' ) || null;
+    return us ? JSON.parse(us) : null;
+  };
 
   return new auth;
 

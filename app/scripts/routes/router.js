@@ -10,67 +10,64 @@ define([
 
     var Router = Backbone.Router.extend({
 
-      initialize: function(routes) { this.routes = routes; },
-
-      currentView: null,
+      initialize: function(routes) {
+        this.routes = routes;
+      },
 
       routes: {
         "login": "login",
         "new-question": "newQuestion",
         "questions": "questions",
+        "logout": "logout",
         "*actions": "notFound404"
       },
 
       isLoggedIn: function() {
         var self = this;
         if( !utils.auth.getUserSession() ) {
-          this.navigate('login');
+          this.navigate('login', {trigger: true});
           return false;
         }
         return true;
       },
 
       login: function() {
-        var self = this;
-        if( self.currentView ) {
-          self.currentView.close();
-        }
         require(['views/login', 'models/login'], function( LoginView, LoginModel ) {
-          self.currentView = new LoginView( { tagName: 'div', className:'currentView', model: new LoginModel() } );
-          $('#main-container').html( self.currentView.$el );
+          var currentView = new LoginView( { tagName: 'div', className:'currentView', model: new LoginModel() } );
+          app.appView.setBodyView( currentView );
         });
       },
 
       newQuestion: function() {
         if( !this.isLoggedIn() ) return;
-        var self = this;
-        if( self.currentView ) {
-          self.currentView.close();
-        }
         require(['views/new-question', 'models/new-question'], function( NewQuestionView, NewQuestionsModel ) {
-          self.currentView = new NewQuestionView( { tagName: 'div', className:'currentView', model: new NewQuestionsModel() } );
-          $('#main-container').html( self.currentView.$el );
+          var currentView = new NewQuestionView( { tagName: 'div', className:'currentView', model: new NewQuestionsModel() } );
+          app.appView.setBodyView( currentView );
         });
       },
 
       questions: function() {
         if( !this.isLoggedIn() ) return;
-        var self = this;
-        if( self.currentView ) {
-          self.currentView.close();
-        }
         require(['views/questions-collection', 'collections/questions'], function(QuestionsCollectionView, QuestionsCollection) {
-          self.currentView = new QuestionsCollectionView( { tagName: 'div', className:'currentView', collection: new QuestionsCollection() } );
-          $('#main-container').html( self.currentView.$el );
+          var currentView = new QuestionsCollectionView( { tagName: 'div', className:'currentView', collection: new QuestionsCollection() } );
+          app.appView.setBodyView( currentView );
+        });
+      },
+
+      logout: function() {
+        if( !this.isLoggedIn() ) return;
+        require(['views/logout'], function(LogoutView) {
+          var currentView = new LogoutView( { tagName: 'div', className:'currentView' } );
+          app.appView.setBodyView( currentView );
         });
       },
 
       notFound404: function() {
         if( !this.isLoggedIn() ) {
           console.log('404 not found. Redirecting to login.');
-          window.location.hash = 'login';
+          window.location.href = '/login';
         } else {
-          window.location.hash = 'questions';
+          window.location.href = '/questions';
         }
         //alert('bad route');
       }

@@ -19,6 +19,9 @@ module.exports = function (grunt) {
     // load all grunt tasks
     require('load-grunt-tasks')(grunt);
 
+    //MODIFIED: add require for connect-modewrite
+    var modRewrite = require('connect-modrewrite');
+
     // configurable paths
     var yeomanConfig = {
         app: 'app',
@@ -68,8 +71,10 @@ module.exports = function (grunt) {
             },
             livereload: {
                 options: {
-                    middleware: function (connect) {
+                    middleware: function (connect, options) {
+                        //middlewares.push(modRewrite(['^[^\\.]*$ /index.html [L]'])); //Matches everything that does not contain a '.' (period)
                         return [
+                            modRewrite(['^[^\\.]*$ /index.html [L]']),
                             lrSnippet,
                             mountFolder(connect, '.tmp'),
                             mountFolder(connect, yeomanConfig.app)
