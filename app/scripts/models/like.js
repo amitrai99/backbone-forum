@@ -9,7 +9,7 @@ define([
 
     var LikeModel = Backbone.Model.extend({
 
-        urlRoot: app.conf.apis.like,
+        urlRoot: function() { return app.conf.apis.like; },
 
         initialize: function() {
         },

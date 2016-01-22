@@ -1,5 +1,5 @@
 {
-  "name": "bbapp",
+  "name": "backbone-forum",
   "private": true,
   "dependencies": {
     "chai": "~1.8.0",

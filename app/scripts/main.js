@@ -24,6 +24,7 @@ require.config({
 //     Backbone.history.start( {pushState: false} );
 // });
 //
-require(['app'], function( app ){
+require(['app','conf/conf'], function( app, conf ){
+  app.setConfig(conf);
   app.init();
 });

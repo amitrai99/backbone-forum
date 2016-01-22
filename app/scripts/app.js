@@ -6,9 +6,12 @@ define(['backbone'], function( Backbone ) {
 
   var app = {
     appView: null,
+    conf: null,
+    setConfig: function(conf) {
+      this.conf = conf;
+    },
     init: function() {
-      require(['routes/router', 'conf/conf'], function( Router, conf ) {
-        app.conf = conf;
+      require(['routes/router'], function( Router ) {
         if( !app.appView ) {
           require(['views/appview'], function( AppView ) {
             app.appView = new AppView( { el: '#app-view' } );
